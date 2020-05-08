@@ -48,6 +48,19 @@ h1 {
   display: flex;
   width: 50%;
   padding: 32px 0;
+  box-sizing: border-box;
+}
+
+.plant-card .selected {
+  border: 1px solid #cf0;
+}
+
+.plant-car .not-selected {
+  opacity: .3;
+}
+
+.search {
+  width: 100%;
 }
 
 .plant-image {

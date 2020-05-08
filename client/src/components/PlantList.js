@@ -7,7 +7,8 @@ export default class PlantList extends Component {
     super(props)
 
     this.state = {
-      plants: []
+      plants: [],
+      search: ''
     }
   }
   // when the component mounts:
@@ -17,20 +18,56 @@ export default class PlantList extends Component {
   componentDidMount() {
     axios.get('http://localhost:3333/plants')
       .then(res => {
-        debugger
         this.setState({plants: res.data.plantsData})
       })
       .catch(err => {
         console.log(err.data)
       })
   }
+  
+
+  componentDidUpdate(prevProps, prevState) {
+
+    if (prevState.search !== this.state.search) {
+      const newPlants = this.state.plants.map(plant => {
+        for (var key in plant) {
+          if (typeof plant[key] === 'string') {
+            if(plant[key].indexOf(this.state.search)!== -1) {
+              plant.display = 'selected'
+            } else {
+              plant.display = 'not-selected'
+            }
+          }
+        }
+      })
+      // this.setState({
+      //   plants: newPlants
+      // })
+    }
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      search: e.target.value
+    })
+  }
 
   /*********  DON'T CHANGE ANYTHING IN THE RENDER FUNCTION *********/
   render() {
     return (
       <main className="plant-list">
+      <div className='search'>
+        <form>
+          <input  type='text' 
+                  name='search' 
+                  value={this.state.search}
+                  onChange={this.handleChange}
+                   />
+          <button>Search</button>
+        </form>
+      </div>
         {this.state?.plants?.map((plant) => (
-          <div className="plant-card" key={plant.id}>
+          <div className='plant-card' key={plant.id}>
             <img className="plant-image" src={plant.img} alt={plant.name} />
             <div className="plant-details">
               <h2 className="plant-name">{plant.name}</h2>
