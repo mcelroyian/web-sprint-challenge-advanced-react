@@ -29,20 +29,27 @@ export default class PlantList extends Component {
   componentDidUpdate(prevProps, prevState) {
 
     if (prevState.search !== this.state.search) {
+      
       const newPlants = this.state.plants.map(plant => {
+        if (this.state.search === '') {
+          plant.display = ''
+          return plant
+        }
         for (var key in plant) {
           if (typeof plant[key] === 'string') {
             if(plant[key].indexOf(this.state.search)!== -1) {
               plant.display = 'selected'
-            } else {
-              plant.display = 'not-selected'
-            }
+              return plant
+            } 
           }
         }
+        plant.display = 'not-selected'
+        return plant
       })
-      // this.setState({
-      //   plants: newPlants
-      // })
+     // console.log(newPlants)
+      this.setState({
+        plants: newPlants
+      })
     }
   }
 
@@ -67,7 +74,7 @@ export default class PlantList extends Component {
         </form>
       </div>
         {this.state?.plants?.map((plant) => (
-          <div className='plant-card' key={plant.id}>
+          <div className={`plant-card ${plant.display}`} key={plant.id}>
             <img className="plant-image" src={plant.img} alt={plant.name} />
             <div className="plant-details">
               <h2 className="plant-name">{plant.name}</h2>

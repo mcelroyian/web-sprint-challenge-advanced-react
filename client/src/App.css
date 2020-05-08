@@ -51,11 +51,11 @@ h1 {
   box-sizing: border-box;
 }
 
-.plant-card .selected {
+.plant-card.selected {
   border: 1px solid #cf0;
 }
 
-.plant-car .not-selected {
+.plant-card.not-selected {
   opacity: .3;
 }
 
